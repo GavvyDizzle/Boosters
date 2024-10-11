@@ -1,0 +1,45 @@
+time:
+  date_format: d MMM yyyy h:mm:ssa z
+  time_zone: America/New_York
+lore:
+  player:
+    - '&7Time Remaining: &b{time_formatted}'
+    - '&7End Date: &b{end_date}'
+  admin:
+    - '&7Time Remaining: &b{time_formatted}'
+    - '&7End Date: &b{end_date}'
+    - '&7Targets: &e{targets}'
+type:
+  COMMAND_DROPS:
+    material: BUNDLE
+    # The name given to the menu item if no bossbar name is specified
+    default_name: '&eRewards Boost'
+    prefix_lore:
+      - '&7Multiplier: &a{multiplier}x'
+      - ''
+  LEVELS:
+    material: EXPERIENCE_BOTTLE
+    default_name: '&eLevels Boost'
+    prefix_lore: []
+  POTION_EFFECT:
+    material: BEACON
+    default_name: '&ePotion Effect Boost'
+    prefix_lore:
+      - '&7Effect: &a{effect} {amplifier}'
+      - ''
+  PRISON_ENCHANTS:
+    material: ENCHANTING_TABLE
+    default_name: '&eEnchants Boost'
+    prefix_lore:
+      - '&7Multiplier: &a{multiplier}x'
+      - ''
+  SHOPGUIPLUS_SELL_BOOST:
+    material: SUNFLOWER
+    default_name: '&eSell Boost'
+    prefix_lore: []
+  VANILLA_FISHING:
+    material: FISHING_ROD
+    default_name: '&eFishing Boost'
+    prefix_lore:
+      - '&7Multiplier: &a{multiplier}x'
+      - ''

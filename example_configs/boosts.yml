@@ -1,0 +1,29 @@
+# The save file for active boosts on server shutdown
+boosts:
+  '1':
+    type: COMMAND_DROPS
+    time: 1234567890
+    target:
+      type: GLOBAL
+    bossbar: ''
+    data:
+      multiplier: 2.0
+  '2':
+    type: POTION_EFFECT
+    time: 1234567890
+    target:
+      type: PLAYER
+      list: # uuids
+        - 5af0dc45-90b7-4b14-8fb3-5650df713b14
+    data:
+      effect: HASTE
+      amplifier: 1
+  '3':
+    type: LEVELS
+    time: 1234567890
+    target:
+      type: GROUP
+      list: # group names
+        - vip
+    data:
+      permission: levels.boost.2.0

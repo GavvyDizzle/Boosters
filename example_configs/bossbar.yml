@@ -1,0 +1,31 @@
+type:
+  COMMAND_DROPS:
+    content: ''
+    color: GREEN
+    overlay: PROGRESS
+    initialProgress: 1.0
+  LEVELS:
+    content: ''
+    color: GREEN
+    overlay: PROGRESS
+    initialProgress: 1.0
+  POTION_EFFECT:
+    content: ''
+    color: GREEN
+    overlay: PROGRESS
+    initialProgress: 1.0
+  PRISON_ENCHANTS:
+    content: ''
+    color: GREEN
+    overlay: PROGRESS
+    initialProgress: 1.0
+  SHOPGUIPLUS_SELL_BOOST:
+    content: ''
+    color: GREEN
+    overlay: PROGRESS
+    initialProgress: 1.0
+  VANILLA_FISHING:
+    content: ''
+    color: GREEN
+    overlay: PROGRESS
+    initialProgress: 1.0

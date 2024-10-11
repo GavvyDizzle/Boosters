@@ -1,0 +1,20 @@
+name: Boosters
+version: '${project.version}'
+main: me.github.gavvydizzle.boosters.BoostPlugin
+api-version: '1.20'
+load: POSTWORLD
+depend: [ServerUtils]
+softdepend: [CommandDrops, Levels, LuckPerms, PrisonEnchants, ShopGUIPlus]
+authors: [GavvyDizzle]
+description: A command based boost system
+commands:
+  boostadmin:
+    aliases: [boostsadmin, boosteradmin, boostersadmin]
+    description: BoostPlugin admin commands
+    permission: boosters.admin
+    permission-message: Insufficient permission
+  boost:
+    aliases: [boosts, booster, boosters]
+    description: BoostPlugin player commands
+    permission: boosters.player
+    permission-message: Insufficient permission
