@@ -1,5 +1,6 @@
 package me.github.gavvydizzle.boosters.boost.type;
 
+import com.github.mittenmc.serverutils.Numbers;
 import com.github.mittenmc.serverutils.bossbar.VisualBossBar;
 import me.github.gavvydizzle.boosters.boost.target.BoostTarget;
 import me.github.gavvydizzle.boosters.boost.target.GlobalTarget;
@@ -21,7 +22,7 @@ public class TimedPermissionBoost extends Boost {
     private static final String GIVE_PLAYER_PERMISSION = "lp user {player} permission settemp {perm} true {time} accumulate";
     private static final String GIVE_ALL_PERMISSION = "lp group default permission settemp {perm} true {time} accumulate";
     private static final String GIVE_GROUP_PERMISSION = "lp group {group} permission settemp {perm} true {time} accumulate";
-    private static final String REMOVE_PLAYER_PERMISSION = "lp user {player} default permission unsettemp {perm}";
+    private static final String REMOVE_PLAYER_PERMISSION = "lp user {player} permission unsettemp {perm}";
     private static final String REMOVE_ALL_PERMISSION = "lp group default permission unsettemp {perm}";
     private static final String REMOVE_GROUP_PERMISSION = "lp group {group} permission unsettemp {perm}";
 
@@ -41,21 +42,22 @@ public class TimedPermissionBoost extends Boost {
     @Override
     public void onTimeIncrease(long increasedMillis) {
         super.onTimeIncrease(increasedMillis);
+        if (increasedMillis < 1000) return;
 
-        long additionalTime = System.currentTimeMillis() + increasedMillis;
+        String increasedSecondsString = Numbers.getTimeFormatted(Math.max(1, increasedMillis / 1000));
 
         BoostTarget target = super.getTarget();
 
         if (target instanceof GlobalTarget) {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), GIVE_ALL_PERMISSION
                     .replace("{perm}", permission)
-                    .replace("{time}", String.valueOf(additionalTime))
+                    .replace("{time}", increasedSecondsString)
             );
         }
         else if (target instanceof PlayerTarget players) {
             String temp = GIVE_PLAYER_PERMISSION
                     .replace("{perm}", permission)
-                    .replace("{time}", String.valueOf(additionalTime)
+                    .replace("{time}", increasedSecondsString
             );
 
             for (UUID uuid : players.getUuids()) {
@@ -65,7 +67,7 @@ public class TimedPermissionBoost extends Boost {
         else if (target instanceof GroupTarget groupTarget) {
             String temp = GIVE_GROUP_PERMISSION
                     .replace("{perm}", permission)
-                    .replace("{time}", String.valueOf(additionalTime)
+                    .replace("{time}", String.valueOf(increasedSecondsString)
             );
 
             for (Group group : groupTarget.getGroups()) {
@@ -74,6 +76,8 @@ public class TimedPermissionBoost extends Boost {
         }
     }
 
+    // As long as the boost is handled correctly, these commands are unnecessary when the boost completes normally.
+    // Since boost cancellation comes through here too, it will be left. It will create extra console logs.
     @Override
     public void finish() {
         BoostTarget target = super.getTarget();
