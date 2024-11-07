@@ -36,12 +36,14 @@ public class TimedPermissionBoost extends Boost {
     @Override
     public void start() {
         super.start();
-        onTimeIncrease(super.getMillisRemaining());
+        increasePermissionTime(super.getMillisRemaining());
     }
 
-    @Override
-    public void onTimeIncrease(long increasedMillis) {
-        super.onTimeIncrease(increasedMillis);
+    /**
+     * Increase the time of this boost without impacting the bossbar
+     * @param increasedMillis The time increase in milliseconds
+     */
+    private void increasePermissionTime(long increasedMillis) {
         if (increasedMillis < 1000) return;
 
         String increasedSecondsString = Numbers.getTimeFormatted(Math.max(1, increasedMillis / 1000));
@@ -58,7 +60,7 @@ public class TimedPermissionBoost extends Boost {
             String temp = GIVE_PLAYER_PERMISSION
                     .replace("{perm}", permission)
                     .replace("{time}", increasedSecondsString
-            );
+                    );
 
             for (UUID uuid : players.getUuids()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), temp.replace("{player}", uuid.toString()));
@@ -68,12 +70,18 @@ public class TimedPermissionBoost extends Boost {
             String temp = GIVE_GROUP_PERMISSION
                     .replace("{perm}", permission)
                     .replace("{time}", String.valueOf(increasedSecondsString)
-            );
+                    );
 
             for (Group group : groupTarget.getGroups()) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), temp.replace("{group}", group.getName()));
             }
         }
+    }
+
+    @Override
+    public void onTimeIncrease(long increasedMillis) {
+        super.onTimeIncrease(increasedMillis);
+        increasePermissionTime(increasedMillis);
     }
 
     // As long as the boost is handled correctly, these commands are unnecessary when the boost completes normally.
