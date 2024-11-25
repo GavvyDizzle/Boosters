@@ -1,5 +1,6 @@
 package me.github.gavvydizzle.boosters.boost.type;
 
+import com.github.mittenmc.lib.folialib.wrapper.task.WrappedTask;
 import com.github.mittenmc.serverutils.ItemStackUtils;
 import com.github.mittenmc.serverutils.Numbers;
 import com.github.mittenmc.serverutils.bossbar.BossBarBuilder;
@@ -9,7 +10,6 @@ import com.github.mittenmc.serverutils.item.ItemStackBuilder;
 import lombok.Getter;
 import me.github.gavvydizzle.boosters.BoostPlugin;
 import me.github.gavvydizzle.boosters.boost.target.BoostTarget;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +29,7 @@ public abstract class Boost implements Comparable<Boost> {
     @Getter private final BoostType type;
     @Getter private final BoostTarget target;
     protected long completionMillis;
-    private int taskID;
+    @Nullable private WrappedTask task;
 
     @Nullable private final VisualBossBar visualBossBar;
     @Nullable private TimedBossBar bossBar;
@@ -39,7 +39,7 @@ public abstract class Boost implements Comparable<Boost> {
         this.type = type;
         this.target = target;
         this.completionMillis = completionMillis;
-        this.taskID = -1;
+        this.task = null;
         this.visualBossBar = visualBossBar;
     }
 
@@ -116,13 +116,13 @@ public abstract class Boost implements Comparable<Boost> {
      */
     public void scheduleCompletion() {
         // Cancel any previously scheduled cleanup task
-        if (taskID != -1) Bukkit.getScheduler().cancelTask(taskID);
+        if (task != null) task.cancel();
 
-        taskID = Bukkit.getScheduler().scheduleSyncDelayedTask(BoostPlugin.getInstance(), () -> {
+        task = BoostPlugin.getInstance().getFoliaLib().getScheduler().runLater(() -> {
             finish();
             removeBossBar();
             BoostPlugin.getInstance().getBoostManager().unregisterBoost(this);
-        }, getTicksRemaining());
+        }, Math.max(getTicksRemaining(), 1));
     }
 
     /**
@@ -130,7 +130,7 @@ public abstract class Boost implements Comparable<Boost> {
      */
     public void cancel() {
         // Cancel any previously scheduled cleanup task
-        if (taskID != -1) Bukkit.getScheduler().cancelTask(taskID);
+        if (task != null) task.cancel();
 
         finish();
         removeBossBar();
@@ -142,7 +142,7 @@ public abstract class Boost implements Comparable<Boost> {
      * This should only be called on plugin disable.
      */
     public void cleanupTasks() {
-        if (taskID != -1) Bukkit.getScheduler().cancelTask(taskID);
+        if (task != null) task.cancel();
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class Boost implements Comparable<Boost> {
     public void onTimeIncrease(long increaseMillis) {
         if (bossBar != null) bossBar.addTime((int) (increaseMillis/1000));
 
-        if (taskID != -1) Bukkit.getScheduler().cancelTask(taskID);
+        if (task != null) task.cancel();
         BoostPlugin.getInstance().getBoostManager().attemptBoostCompletionSchedule(this);
     }
 
@@ -175,7 +175,7 @@ public abstract class Boost implements Comparable<Boost> {
 
         if (bossBar != null) bossBar.removeTime((int) (decreaseMillis/1000));
 
-        if (taskID != -1) Bukkit.getScheduler().cancelTask(taskID);
+        if (task != null) task.cancel();
         BoostPlugin.getInstance().getBoostManager().attemptBoostCompletionSchedule(this);
     }
 

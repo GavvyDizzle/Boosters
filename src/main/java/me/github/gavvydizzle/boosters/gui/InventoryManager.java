@@ -1,7 +1,7 @@
 package me.github.gavvydizzle.boosters.gui;
 
+import com.github.mittenmc.lib.folialib.wrapper.task.WrappedTask;
 import com.github.mittenmc.serverutils.ConfigUtils;
-import com.github.mittenmc.serverutils.RepeatingTask;
 import com.github.mittenmc.serverutils.gui.MenuManager;
 import com.github.mittenmc.serverutils.gui.pages.PagesMenu;
 import com.github.mittenmc.serverutils.item.ItemStackBuilder;
@@ -28,7 +28,7 @@ public class InventoryManager extends MenuManager {
     private static final int MENU_UPDATE_TICKS = 20;
 
     private final BoostPlugin instance;
-    private RepeatingTask menuRefreshTask;
+    private WrappedTask menuRefreshTask;
     private final Map<UUID, BoostListMenu> activeListMenus;
 
     private DateFormat dateFormat;
@@ -100,12 +100,7 @@ public class InventoryManager extends MenuManager {
      * This operation is potentially strenuous on the server!
      */
     private void startUpdateClock() {
-        menuRefreshTask = new RepeatingTask(instance, MENU_UPDATE_TICKS, MENU_UPDATE_TICKS) {
-            @Override
-            public void run() {
-                refreshBoostMenus();
-            }
-        };
+        menuRefreshTask = instance.getFoliaLib().getScheduler().runTimerAsync(this::refreshBoostMenus, MENU_UPDATE_TICKS, MENU_UPDATE_TICKS);
     }
 
     public void cleanup() {

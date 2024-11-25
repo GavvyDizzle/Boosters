@@ -24,7 +24,6 @@ public class StartPotionEffectBoostCommand extends StartBoostSubCommand {
         super(List.of(BoostType.POTION_EFFECT), boostManager);
 
         setSyntax("/" + commandManager.getCommandDisplayName() + " start <type> <duration> <target> <effect> <amplifier>");
-        setColoredSyntax(ChatColor.YELLOW + getSyntax());
     }
 
     @Override

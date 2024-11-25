@@ -1,6 +1,6 @@
 package me.github.gavvydizzle.boosters.boost;
 
-import com.github.mittenmc.serverutils.RepeatingTask;
+import com.github.mittenmc.lib.folialib.wrapper.task.WrappedTask;
 import com.github.mittenmc.serverutils.bossbar.VisualBossBar;
 import lombok.Getter;
 import me.github.gavvydizzle.boosters.BoostPlugin;
@@ -32,7 +32,7 @@ public class BoostManager implements Listener {
 
     private final BoostPlugin instance;
     private final InventoryManager inventoryManager;
-    private RepeatingTask completionClock;
+    private WrappedTask completionClock;
     @Getter private final BossBarManager bossBarManager;
 
     private final Set<Boost> activeBoosts;
@@ -132,13 +132,10 @@ public class BoostManager implements Listener {
      * This will attempt to schedule a completion for any boost which should complete within this clock cycle.
      */
     private void startCompletionClock() {
-        completionClock = new RepeatingTask(instance, 0, BOOST_COMPLETION_PERIOD_TICKS) {
-            @Override
-            public void run() {
-                purgeCompletedBoosts();
-                activeBoosts.forEach(boost -> attemptBoostCompletionSchedule(boost));
-            }
-        };
+        completionClock = instance.getFoliaLib().getScheduler().runTimer(() -> {
+            purgeCompletedBoosts();
+            activeBoosts.forEach(this::attemptBoostCompletionSchedule);
+        }, 1, BOOST_COMPLETION_PERIOD_TICKS);
     }
 
     // Acts as the garbage collector for completed boosts

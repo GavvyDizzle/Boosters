@@ -23,7 +23,6 @@ public class OpenListMenuCommand extends SubCommand {
         setName("list");
         setDescription("Opens the boost list menu");
         setSyntax("/" + adminCommandManager.getCommandDisplayName() + " list [player]");
-        setColoredSyntax(ChatColor.YELLOW + getSyntax());
         setPermission(adminCommandManager.getPermissionPrefix() + getName().toLowerCase());
     }
 

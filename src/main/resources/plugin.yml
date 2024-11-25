@@ -1,12 +1,14 @@
 name: Boosters
 version: '${project.version}'
 main: me.github.gavvydizzle.boosters.BoostPlugin
-api-version: '1.20'
-load: POSTWORLD
-depend: [ServerUtils]
-softdepend: [CommandDrops, Levels, LuckPerms, PrisonEnchants, ShopGUIPlus]
+api-version: '1.21'
+folia-supported: true
 authors: [GavvyDizzle]
 description: A command based boost system
+
+depend: [ServerUtils]
+softdepend: [CommandDrops, Levels, LuckPerms, PrisonEnchants, ShopGUIPlus]
+
 commands:
   boostadmin:
     aliases: [boostsadmin, boosteradmin, boostersadmin]

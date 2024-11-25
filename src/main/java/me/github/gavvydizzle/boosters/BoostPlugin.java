@@ -1,6 +1,7 @@
 package me.github.gavvydizzle.boosters;
 
 import com.github.mittenmc.serverutils.ConfigManager;
+import com.github.mittenmc.serverutils.ServerUtilsPlugin;
 import com.github.mittenmc.serverutils.autosave.AutoSaver;
 import lombok.Getter;
 import me.github.gavvydizzle.boosters.boost.BoostManager;
@@ -12,12 +13,11 @@ import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
 
-public final class BoostPlugin extends JavaPlugin {
+public final class BoostPlugin extends ServerUtilsPlugin {
 
     @Getter private static BoostPlugin instance;
     @Getter private InventoryManager inventoryManager;
@@ -45,12 +45,10 @@ public final class BoostPlugin extends JavaPlugin {
         new AdminCommandManager(getCommand("boostadmin"), this, boostManager, inventoryManager);
         new PlayerCommandManager(getCommand("boost"), inventoryManager);
 
-        autoSaver = new AutoSaver(this, AutoSaver.TimeUnit.ONE_MINUTE) {
+        autoSaver = new AutoSaver(this, AutoSaver.TimeUnit.ONE_MINUTE, true) {
             @Override
             public void save() {
-                Bukkit.getScheduler().runTaskAsynchronously(instance, () -> {
-                    if (boostManager != null) boostManager.saveBoosts();
-                });
+                if (boostManager != null) boostManager.saveBoosts();
             }
         };
 
@@ -66,6 +64,7 @@ public final class BoostPlugin extends JavaPlugin {
         }
         if (autoSaver != null) autoSaver.cancel();
 
+        getFoliaLib().getScheduler().cancelAllTasks();
         HandlerList.unregisterAll(this);
     }
 }

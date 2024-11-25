@@ -20,7 +20,6 @@ public class StartTimedPermissionBoostCommand extends StartBoostSubCommand {
         super(List.of(BoostType.LEVELS, BoostType.SHOPGUIPLUS_SELL_BOOST), boostManager);
 
         setSyntax("/" + commandManager.getCommandDisplayName() + " start <type> <duration> <target> <permission>");
-        setColoredSyntax(ChatColor.YELLOW + getSyntax());
     }
 
     @Override

@@ -1,8 +1,8 @@
 package me.github.gavvydizzle.boosters.boost.type;
 
+import com.github.mittenmc.lib.folialib.wrapper.task.WrappedTask;
 import com.github.mittenmc.serverutils.ItemStackUtils;
 import com.github.mittenmc.serverutils.Numbers;
-import com.github.mittenmc.serverutils.RepeatingTask;
 import com.github.mittenmc.serverutils.bossbar.VisualBossBar;
 import me.github.gavvydizzle.boosters.BoostPlugin;
 import me.github.gavvydizzle.boosters.boost.target.BoostTarget;
@@ -23,7 +23,7 @@ public class PotionEffectBoost extends Boost {
     private static final int EFFECT_APPLY_PERIOD_TICKS = 20 * 5;
 
     private final PotionEffect effect;
-    private RepeatingTask task;
+    private WrappedTask task;
 
     public PotionEffectBoost(BoostTarget target, long completionMillis, PotionEffectType effectType, int amplifier, @Nullable VisualBossBar visualBossBar) {
         super(BoostType.POTION_EFFECT, target, completionMillis, visualBossBar);
@@ -31,30 +31,22 @@ public class PotionEffectBoost extends Boost {
     }
 
     private void startEffectClock() {
-        task = new RepeatingTask(BoostPlugin.getInstance(), 0, EFFECT_APPLY_PERIOD_TICKS) {
-            @Override
-            public void run() {
-                applyEffect();
-            }
-        };
+        task = BoostPlugin.getInstance().getFoliaLib().getScheduler().runTimerAsync(() -> applyEffect(), 1, EFFECT_APPLY_PERIOD_TICKS);
     }
 
     private void applyEffect() {
-        if (getTicksRemaining() < EFFECT_DURATION_TICKS) {
-            PotionEffect shortened = new PotionEffect(effect.getType(), (int) getTicksRemaining(), effect.getAmplifier());
-            super.getOnlinePlayers().forEach(player -> player.addPotionEffect(shortened));
-        } else {
-            super.getOnlinePlayers().forEach(player -> player.addPotionEffect(effect));
-        }
+        super.getOnlinePlayers().forEach(this::applyEffect);
     }
 
     private void applyEffect(Player player) {
-        if (getTicksRemaining() < EFFECT_DURATION_TICKS) {
-            PotionEffect shortened = new PotionEffect(effect.getType(), (int) getTicksRemaining(), effect.getAmplifier());
-            player.addPotionEffect(shortened);
-        } else {
-            player.addPotionEffect(effect);
-        }
+        BoostPlugin.getInstance().getFoliaLib().getScheduler().runAtEntity(player, (t) -> {
+            if (getTicksRemaining() < EFFECT_DURATION_TICKS) {
+                PotionEffect shortened = new PotionEffect(effect.getType(), (int) getTicksRemaining(), effect.getAmplifier());
+                player.addPotionEffect(shortened);
+            } else {
+                player.addPotionEffect(effect);
+            }
+        });
     }
 
     @Override

@@ -24,7 +24,6 @@ public class OpenListMenuCommand extends SubCommand {
         setName("list");
         setDescription("View active boosts");
         setSyntax("/" + commandManager.getCommandDisplayName() + " list [player]");
-        setColoredSyntax(ChatColor.YELLOW + getSyntax());
         setPermission(commandManager.getPermissionPrefix() + getName().toLowerCase());
     }
 

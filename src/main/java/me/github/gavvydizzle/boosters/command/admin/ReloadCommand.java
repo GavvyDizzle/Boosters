@@ -29,7 +29,6 @@ public class ReloadCommand extends SubCommand {
         setName("reload");
         setDescription("Reload plugin data");
         setSyntax("/" + adminCommandManager.getCommandDisplayName() + " reload");
-        setColoredSyntax(ChatColor.YELLOW + getSyntax());
         setPermission(adminCommandManager.getPermissionPrefix() + getName().toLowerCase());
     }
 

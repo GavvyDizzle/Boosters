@@ -39,7 +39,6 @@ public class StartBoostCommand extends SubCommand {
         setName("start");
         setDescription("Start a new boost");
         setSyntax("/" + commandManager.getCommandDisplayName() + " start <type> <duration> <target> ...");
-        setColoredSyntax(ChatColor.YELLOW + getSyntax());
         setPermission(commandManager.getPermissionPrefix() + getName().toLowerCase());
 
         subCommands = new ArrayList<>();

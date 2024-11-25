@@ -24,7 +24,6 @@ public class StartVanillaFishingBoostCommand extends StartBoostSubCommand {
         super(List.of(BoostType.VANILLA_FISHING), boostManager);
 
         setSyntax("/" + commandManager.getCommandDisplayName() + " start <type> <duration> <target> <multiplier> <hook_target>");
-        setColoredSyntax(ChatColor.YELLOW + getSyntax());
     }
 
     @Override

@@ -21,7 +21,6 @@ public class StartMultiplierBasedBoostCommand extends StartBoostSubCommand {
         super(List.of(BoostType.COMMAND_DROPS, BoostType.PRISON_ENCHANTS), boostManager);
 
         setSyntax("/" + commandManager.getCommandDisplayName() + " start <type> <duration> <target> <multiplier>");
-        setColoredSyntax(ChatColor.YELLOW + getSyntax());
     }
 
     @Override
