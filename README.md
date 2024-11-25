@@ -22,7 +22,7 @@ Additional documentation is available in the `/docs` and `/example_config` direc
 - `SHOPGUIPLUS_SELL_BOOST` Uses permissions to boost sell multiplier
 
 ## Dependencies
-- [ServerUtils](https://github.com/MittenMC/ServerUtils) 1.1.10+
+- ServerUtils 2.1.12+
 
 ## Soft Dependencies for Boosts
 - `POTION_EFFECT`, `VANILLA_FISHING` None
