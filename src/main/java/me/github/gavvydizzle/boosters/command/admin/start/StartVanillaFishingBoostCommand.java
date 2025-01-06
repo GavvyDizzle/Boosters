@@ -29,7 +29,7 @@ public class StartVanillaFishingBoostCommand extends StartBoostSubCommand {
 
     @Override
     public Boost perform(CommandSender sender, String[] args, BoostType type, BoostTarget target, long completionMillis) {
-        if (args.length < 5) {
+        if (args.length < 6) {
             sender.sendMessage(getColoredSyntax());
             return null;
         }

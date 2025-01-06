@@ -6,7 +6,7 @@
 
     <groupId>me.github.gavvydizzle</groupId>
     <artifactId>Boosters</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
     <name>Boosters</name>

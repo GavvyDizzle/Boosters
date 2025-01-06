@@ -97,7 +97,7 @@ public class BoostManager implements Listener {
                 visualBossBar = null;
             }
 
-            Boost boost = null;
+            Boost boost;
 
             if (type == BoostType.POTION_EFFECT) {
                 PotionEffectType effectType = PotionEffectType.getByName(section.getString("data.effect", "null"));
@@ -105,10 +105,10 @@ public class BoostManager implements Listener {
 
                 boost = new PotionEffectBoost(target, completionMillis, effectType, Math.max(0, section.getInt("data.amplifier")), visualBossBar);
             } else if (type == BoostType.VANILLA_FISHING) {
-                VanillaFishingBoost.WaitType waitType = VanillaFishingBoost.WaitType.get(section.getString("data.type"));
+                VanillaFishingBoost.WaitType waitType = VanillaFishingBoost.WaitType.get(section.getString("data.waitType"));
                 if (waitType == null) continue;
 
-                new VanillaFishingBoost(target, completionMillis, Math.max(0, section.getDouble("data.multiplier", 1.0)), waitType, visualBossBar);
+                boost = new VanillaFishingBoost(target, completionMillis, Math.max(0, section.getDouble("data.multiplier", 1.0)), waitType, visualBossBar);
             }
             else {
                 boost = switch (type) {
